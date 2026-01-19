@@ -1,0 +1,93 @@
+`timescale 1ns/1ns
+
+/*
+ * Instantiate the 7 modules in the processor:
+ *   insMem, decode, regFile, execute, dataMem, branchPC, pc
+ * Connect up the ports using  wires and glue logic as needed.
+ */
+
+module processor (
+   input CLK_pi,
+   input CPU_RESET_pi
+);
+
+   wire [31:0] pc, instruction;
+   insMem myInsMem ( // returns instruction at PC address
+      .pc_pi(pc),
+      .instruction_po(instruction)
+   );
+
+   // wire [31:0] instr_pi;
+   wire [5:0] opCode;
+   wire [4:0] rs, rt;
+   wire [31:0] offset;
+   wire [4:0] control, destReg;
+   wire writeEnable, isHalt;
+   decode myDecode (
+      .instr_pi(instruction),
+      .opCode_po(opCode),
+      .rs_po(rs),
+      .rt_po(rt),
+      .offset_po(offset),
+      .control_po(control),
+      .destReg_po(destReg),
+      .writeEnable_po(writeEnable),
+      .isHalt_po(isHalt)
+   );
+   
+   wire [31:0] op1, op2;
+   regFile myRegFile (
+      .clk_pi(CLK_pi),
+      .reset_pi(CPU_RESET_pi), 
+      .reg1_pi(rs), 
+      .reg2_pi(rt), 
+      .destReg_pi(destReg), 
+      .we_pi(writeEnable), 
+      .writeData_pi(control[2] ? loadData : aluResult), 
+
+      .operand1_po(op1),
+      .operand2_po(op2)
+   );
+
+   wire [31:0] aluResult;
+   execute myExecute (
+      .op1_pi(op1), 
+      .op2_pi(op2), 
+      .aluFunc_pi(opCode),
+      .offset_pi(offset),
+      .aluResult_po(aluResult)
+   );
+
+   wire [31:0] loadData;
+   dataMem myDataMem (
+      .clk_pi(CLK_pi),
+      .reset_pi(CPU_RESET_pi), 
+      .store_pi(control[3]),  
+      .address_pi(aluResult),
+      .storeData_pi(op2), 
+      .loadData_po(loadData)
+   );
+
+   wire isTakenBranch;
+   wire [31:0] targetPC;
+   branchPC myBranchPC (
+      .currentPC_pi(pc), 
+      .branchCondTrue_pi(aluResult[0]),
+      .isBranch_pi(control[4]),
+      .branchOffset_pi(offset),
+
+      .isTakenBranch_po(isTakenBranch), 
+      .targetPC_po(targetPC)
+   );
+
+   PC myPC (
+      .clk_pi(CLK_pi),
+      .reset_pi(CPU_RESET_pi),
+      .halt_pi(isHalt),
+      .isTakenBranch_pi(isTakenBranch), 
+      .targetPC_pi(targetPC),
+
+      .pc_po(pc) // curr_pc becomes next_pc on rising clock edge so it's ok to wire together
+   );
+
+endmodule

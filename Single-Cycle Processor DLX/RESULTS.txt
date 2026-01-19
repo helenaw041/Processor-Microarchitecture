@@ -1,0 +1,41 @@
+PROGRAM 1:
+(a) Array size = 8: 
+>> Executes Halt at Time = 420, and program completes after 42 cycles
+>> R0: 107 R1:   8 R2: 828 R3:   0 R4:   0 R5:   0 R6:   0 R7:   0 R8:   0
+(b) Array size = 10:
+>> Executes Halt at Time = 520, and program completes after 52 cycles
+>> R0: 109 R1:  10 R2: 1045 R3:   0 R4:   0 R5:   0 R6:   0 R7:   0 R8:   0
+(c) Array size = 20:
+>> Executes Halt at Time = 1020, and program completes after 102 cycles	
+>> R0: 119 R1:  20 R2: 2190 R3:   0 R4:   0 R5:   0 R6:   0 R7:   0 R8:   0
+(d) Time_execution(n) and CPI:
+>> Time_execution(n) = 20 + 50*n
+>> CPI = (42)/(2+5*8) = 1.0 (Makes sense because single-cycle)
+
+PROGRAM 2:
+(a) Array size = 8: 
+>> Executes Halt at Time = 420, and program completes after 42 cycles
+>> R0: 107 R1:   8 R2: 828 R3:   0 R4:   0 R5:   0 R6:   0 R7:   0 R8:   0
+(b) Array size = 10:
+>> Executes Halt at Time = 520, and program completes after 52 cycles
+>> R0: 101 R1:  10 R2:   0 R3:   0 R4:   0 R5:   0 R6:   0 R7:   0 R8:   0
+(c) Array size = 20:
+>> Executes Halt at Time = 1020, and program completes after 102 cycles	
+>> R0: 103 R1:  20 R2:   0 R3:   0 R4:   0 R5:   0 R6:   0 R7:   0 R8:   0
+(d) Time_execution(n) and CPI:
+>> Time_execution(n) = 20 + 50*n
+>> CPI = (42)/(2+5*8) = 1.0
+
+PROGRAM 3:
+(a) Array size = 8: 
+>> Executes Halt at Time = 770, and program completes after 77 cycles
+>> R0: 107 R1: 115 R2:   7 R3:   0 R4:  15 R5: 222 R6:  23 R7:   0 R8:   0
+(b) Array size = 10:
+>> Executes Halt at Time = 950, and program completes after 95 cycles
+>> R0: 109 R1: 119 R2:   9 R3:   0 R4:  19 R5: 228 R6:  29 R7:   0 R8:   0
+(c) Array size = 20:
+>> Executes Halt at Time = 1850, and program completes after 185 cycles	
+>> R0: 119 R1: 139 R2:  19 R3:   0 R4:  39 R5: 258 R6:  59 R7:   0 R8:   0
+(d) Time_execution(n) and CPI:
+>> Time_execution(n) = 50 + 90*n
+>> CPI = (77)/(5+9*8) = 1.0
